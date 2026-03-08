@@ -11,6 +11,7 @@ import {
   sendSuccessResponse,
 } from "../utils/responseHelper";
 import { checkRequiredFields } from "../utils/validateFields";
+import User from "../database/models/user.model";
 
 class AuthController {
   static async registerUser(req: Request, res: Response) {
@@ -169,6 +170,23 @@ class AuthController {
 
       return sendErrorResponse(res, "Failed to reset password", 500);
     }
+  }
+
+  static async getAllUsers(req: Request, res: Response) {
+    const users = await User.findAll({
+      attributes: {
+        exclude: [
+          "password",
+          "otp",
+          "otpExpiry",
+          "otpAttempts",
+          "otpRequestTime",
+          "createdAt",
+          "updatedAt",
+        ],
+      },
+    });
+    return sendSuccessResponse(res, "Users fetched successfully", users, 200);
   }
 }
 

@@ -1,12 +1,14 @@
 import { Router } from "express";
 import AuthController from "../controllers/auth.controller";
+import catchAsync from "../utils/catchAsync";
 
 const router = Router();
 
-router.post("/register", AuthController.registerUser);
-router.post("/login", AuthController.loginUser);
-router.post("/forgot-password", AuthController.forgotPassword);
-router.post("/verify-otp", AuthController.verifyOtp);
-router.post("/reset-password", AuthController.resetPassword);
+router.route("/register").post(catchAsync(AuthController.registerUser));
+router.route("/login").post(catchAsync(AuthController.loginUser));
+router.route("/forgot-password").post(catchAsync(AuthController.forgotPassword));
+router.route("/verify-otp").post(catchAsync(AuthController.verifyOtp));
+router.route("/reset-password").post(catchAsync(AuthController.resetPassword));
+router.route("/").get(catchAsync(AuthController.getAllUsers));
 
 export default router;

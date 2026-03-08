@@ -199,3 +199,21 @@ export const resetPasswordService = async (
     console.error("❌ Password reset email failed:", err);
   }
 };
+
+export const getAllUsersService = async () => {
+  const users = await User.findAll({
+    attributes: {
+      exclude: [
+        "password",
+        "otp",
+        "otpExpiry",
+        "otpAttempts",
+        "otpRequestTime",
+        "createdAt",
+        "updatedAt",
+      ],
+    },
+  });
+  return users;
+};
+
