@@ -5,13 +5,13 @@ import {
   forgotPasswordService,
   verifyOtpService,
   resetPasswordService,
+  getAllUsersService,
 } from "../services/auth.service";
 import {
   sendErrorResponse,
   sendSuccessResponse,
 } from "../utils/responseHelper";
 import { checkRequiredFields } from "../utils/validateFields";
-import User from "../database/models/user.model";
 
 class AuthController {
   static async registerUser(req: Request, res: Response) {
@@ -173,19 +173,8 @@ class AuthController {
   }
 
   static async getAllUsers(req: Request, res: Response) {
-    const users = await User.findAll({
-      attributes: {
-        exclude: [
-          "password",
-          "otp",
-          "otpExpiry",
-          "otpAttempts",
-          "otpRequestTime",
-          "createdAt",
-          "updatedAt",
-        ],
-      },
-    });
+    const users = await getAllUsersService();
+
     return sendSuccessResponse(res, "Users fetched successfully", users, 200);
   }
 }
