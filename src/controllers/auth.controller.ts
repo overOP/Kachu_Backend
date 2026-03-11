@@ -6,6 +6,9 @@ import {
   verifyOtpService,
   resetPasswordService,
   getAllUsersService,
+  getUserByIdService,
+  updateUserByIdService,
+  deleteUserByIdService,
 } from "../services/auth.service";
 import {
   sendErrorResponse,
@@ -176,6 +179,72 @@ class AuthController {
     const users = await getAllUsersService();
 
     return sendSuccessResponse(res, "Users fetched successfully", users, 200);
+  }
+
+  static async getUserById(req: Request, res: Response) {
+    const id = req.params.id as string;
+
+    if (!id) {
+      return sendErrorResponse(res, "User ID is required", 400);
+    }
+
+    try {
+      const user = await getUserByIdService(id);
+      return sendSuccessResponse(res, "User fetched successfully", user, 200);
+    } catch (err: any) {
+      if (err.message === "USER_NOT_FOUND") {
+        return sendErrorResponse(res, "User not found", 404);
+      }
+      return sendErrorResponse(res, "Failed to fetch user", 500);
+    }
+  }
+
+static async updateUserById(req: Request, res: Response) {
+  const id = req.params.id as string;
+  const data = req.body;
+
+  if (!id) {
+    return sendErrorResponse(res, "User ID is required", 400);
+  }
+
+  if (req.file) {
+    data.profileImage = req.file.filename;
+  }
+
+  try {
+    const user = await updateUserByIdService(id, data);
+
+    return sendSuccessResponse(
+      res,
+      "User updated successfully",
+      user,
+      200
+    );
+  } catch (err: any) {
+    if (err.message === "USER_NOT_FOUND") {
+      return sendErrorResponse(res, "User not found", 404);
+    }
+
+    return sendErrorResponse(res, "Failed to update user", 500);
+  }
+}
+
+  static async deleteUserById(req: Request, res: Response) {
+    const id = req.params.id as string;
+
+    if (!id) {
+      return sendErrorResponse(res, "User ID is required", 400);
+    }
+
+    try {
+      const user = await deleteUserByIdService(id);
+      return sendSuccessResponse(res, "User deleted successfully", user, 200);
+    } catch (err: any) {
+      if (err.message === "USER_NOT_FOUND") {
+        return sendErrorResponse(res, "User not found", 404);
+      }
+      return sendErrorResponse(res, "Failed to delete user", 500);
+    }
   }
 }
 

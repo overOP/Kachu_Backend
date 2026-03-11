@@ -217,3 +217,45 @@ export const getAllUsersService = async () => {
   return users;
 };
 
+export const getUserByIdService = async (id: string) => {
+  const user = await User.findByPk(id);
+  if (!user) {
+    throw new Error("USER_NOT_FOUND");
+  }
+  return user;
+};
+
+export const updateUserByIdService = async (id: string, data: any) => {
+  const user = await User.findByPk(id);
+
+  if (!user) {
+    throw new Error("USER_NOT_FOUND");
+  }
+
+  if (data.profileImage && user.profileImage) {
+    await deleteFile(user.profileImage);
+  }
+
+  user.set(data);
+  await user.save();
+
+  return user;
+};
+
+export const deleteUserByIdService = async (id: string) => {
+  const user = await User.findByPk(id);
+
+  if (!user) {
+    throw new Error("USER_NOT_FOUND");
+  }
+
+  if (user.profileImage) {
+    await deleteFile(user.profileImage);
+  }
+
+  await user.destroy();
+
+  return user;
+};
+
+
