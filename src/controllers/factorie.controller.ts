@@ -5,11 +5,9 @@ import { sendErrorResponse, sendSuccessResponse } from "../utils/responseHelper"
 import { deleteFile } from "../utils/fileHelper";
 
 class FactoryController {
-  // ================= CREATE =================
   async addFactory(req: Request, res: Response) {
     const { factoryName } = req.body;
 
-    // Check if factory already exists
     const exists = await Factory.findOne({ where: { factoryName } });
     if (exists) {
       return sendErrorResponse(res, "Factory already exists", 400);
@@ -25,7 +23,6 @@ class FactoryController {
     return sendSuccessResponse(res, "Factory created", factory, 201);
   }
 
-  // ================= READ =================
   async getAllFactories(req: Request, res: Response) {
     const factories = await Factory.findAll({
       attributes: ["id", "factoryName", "factoryImage"],
@@ -46,7 +43,6 @@ class FactoryController {
     return sendSuccessResponse(res, "Factory fetched", factory, 200);
   }
 
-  // ================= UPDATE =================
   async updateFactory(req: Request, res: Response) {
     const id = Number(req.params.id);
     if (isNaN(id)) {
@@ -88,7 +84,6 @@ class FactoryController {
     return sendSuccessResponse(res, "Factory updated", factory, 200);
   }
 
-  // ================= DELETE =================
   async deleteFactory(req: Request, res: Response) {
     const id = Number(req.params.id);
     if (isNaN(id)) {

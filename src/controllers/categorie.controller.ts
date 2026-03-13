@@ -7,7 +7,10 @@ import {
   updateCategoryService,
   deleteCategoryService,
 } from "../services/categorie.service";
-import { sendErrorResponse, sendSuccessResponse } from "../utils/responseHelper";
+import {
+  sendErrorResponse,
+  sendSuccessResponse,
+} from "../utils/responseHelper";
 
 class CategoryController {
   async getAllCategories(req: AuthRequest, res: Response) {

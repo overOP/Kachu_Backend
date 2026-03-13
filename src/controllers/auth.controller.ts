@@ -199,35 +199,30 @@ class AuthController {
     }
   }
 
-static async updateUserById(req: Request, res: Response) {
-  const id = req.params.id as string;
-  const data = req.body;
+  static async updateUserById(req: Request, res: Response) {
+    const id = req.params.id as string;
+    const data = req.body;
 
-  if (!id) {
-    return sendErrorResponse(res, "User ID is required", 400);
-  }
-
-  if (req.file) {
-    data.profileImage = req.file.filename;
-  }
-
-  try {
-    const user = await updateUserByIdService(id, data);
-
-    return sendSuccessResponse(
-      res,
-      "User updated successfully",
-      user,
-      200
-    );
-  } catch (err: any) {
-    if (err.message === "USER_NOT_FOUND") {
-      return sendErrorResponse(res, "User not found", 404);
+    if (!id) {
+      return sendErrorResponse(res, "User ID is required", 400);
     }
 
-    return sendErrorResponse(res, "Failed to update user", 500);
+    if (req.file) {
+      data.profileImage = req.file.filename;
+    }
+
+    try {
+      const user = await updateUserByIdService(id, data);
+
+      return sendSuccessResponse(res, "User updated successfully", user, 200);
+    } catch (err: any) {
+      if (err.message === "USER_NOT_FOUND") {
+        return sendErrorResponse(res, "User not found", 404);
+      }
+
+      return sendErrorResponse(res, "Failed to update user", 500);
+    }
   }
-}
 
   static async deleteUserById(req: Request, res: Response) {
     const id = req.params.id as string;
