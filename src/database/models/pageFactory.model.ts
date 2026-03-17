@@ -25,6 +25,12 @@ class PageFactory extends Model {
     type: DataType.STRING,
     allowNull: false,
   })
+  declare factoryBannerImage: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
   declare factoryName: string;
 
   @Column({
@@ -34,22 +40,28 @@ class PageFactory extends Model {
   declare factoryDescription: string;
 
   @Column({
-    type: DataType.DECIMAL(10, 2),
-    allowNull: false,
-  })
-  declare factoryPrice: number;
-
-  @Column({
-    type: DataType.INTEGER,
+    type: DataType.JSON,
     allowNull: true,
   })
-  declare minimumOrderQty: number;
+  declare factoryImages: string;
 
   @Column({
     type: DataType.JSON,
     allowNull: true,
   })
-  declare factoryImages: string[];
+  declare factoryLocationImage: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  declare factoryLocationUrl: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  declare factoryLocation: string;
 
   @ForeignKey(() => Product)
   @Column({
