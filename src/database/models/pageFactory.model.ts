@@ -57,6 +57,8 @@ class PageFactory extends Model {
   })
   declare factoryLocationUrl: string;
 
+
+  
   @Column({
     type: DataType.STRING,
     allowNull: true,
