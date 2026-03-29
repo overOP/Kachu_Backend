@@ -20,10 +20,15 @@ class ProductController {
       const product = await createProductService(
         req.body,
         req.files as Express.Multer.File[],
-        req.user!.id
+        req.user!.id,
       );
 
-      return sendSuccessResponse(res, "Product added successfully", product, 201);
+      return sendSuccessResponse(
+        res,
+        "Product added successfully",
+        product,
+        201,
+      );
     } catch (err: any) {
       return sendErrorResponse(res, err.message, 400);
     }
@@ -43,7 +48,7 @@ class ProductController {
 
   async getProductsByCategory(req: AuthRequest, res: Response) {
     const products = await getProductsByCategoryService(
-      Number(req.params.categoryId)
+      Number(req.params.categoryId),
     );
     return sendSuccessResponse(res, "Products fetched", products, 200);
   }
@@ -61,7 +66,7 @@ class ProductController {
       const product = await updateProductService(
         Number(req.params.id),
         req.body,
-        req.files as Express.Multer.File[]
+        req.files as Express.Multer.File[],
       );
 
       return sendSuccessResponse(res, "Product updated", product, 200);

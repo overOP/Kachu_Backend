@@ -1,4 +1,6 @@
-import "dotenv/config";
+import dotenv from "dotenv";
+dotenv.config();
+
 import { App } from "./configs/app";
 import { connectToDatabase } from "./database/connection";
 import adminSeed from "./seed/superadmin.seed";

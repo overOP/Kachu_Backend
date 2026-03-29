@@ -13,7 +13,7 @@ class Auth {
     res: Response,
     next: NextFunction,
   ): Promise<void> {
-    const token = req.headers.authorization;
+    const token = req.headers.authorization?.split(" ")[1];
     if (!token || token === undefined) {
       res.status(403).json({
         message: "token not found",
@@ -29,6 +29,8 @@ class Auth {
           res.status(403).json({
             message: "token not valid",
           });
+          console.log("JWT_SECRET:", process.env.JWT_SECRET);
+          console.log("Token:", token);
           return;
         } else {
           try {

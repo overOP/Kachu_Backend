@@ -8,10 +8,14 @@ const adminSeed = async () => {
     SUPER_ADMIN_PASSWORD,
     BCRYPT_SALT_ROUNDS,
     SUPER_ADMIN_ROLE,
-    DEFAULT_AVATAR
   } = process.env;
 
-  if (!SUPER_ADMIN_NAME || !SUPER_ADMIN_EMAIL || !SUPER_ADMIN_PASSWORD || !SUPER_ADMIN_ROLE || !DEFAULT_AVATAR) {
+  if (
+    !SUPER_ADMIN_NAME ||
+    !SUPER_ADMIN_EMAIL ||
+    !SUPER_ADMIN_PASSWORD ||
+    !SUPER_ADMIN_ROLE
+  ) {
     throw new Error("❌ Missing admin environment variables");
   }
 
@@ -23,7 +27,6 @@ const adminSeed = async () => {
   const hashedPassword = await bcrypt.hash(SUPER_ADMIN_PASSWORD, saltRounds);
   if (!existingAdmin) {
     await User.create({
-      profileImage: DEFAULT_AVATAR,
       name: SUPER_ADMIN_NAME,
       email: SUPER_ADMIN_EMAIL,
       password: hashedPassword,
