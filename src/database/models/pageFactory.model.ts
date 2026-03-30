@@ -1,14 +1,13 @@
 import {
-  Table,
+  BelongsTo,
   Column,
-  Model,
   DataType,
   ForeignKey,
-  BelongsTo,
-  AllowNull,
+  Model,
+  Table,
 } from "sequelize-typescript";
-import Product from "./products.model";
 import Factory from "./factory.model";
+import Product from "./products.model";
 
 @Table({
   tableName: "pageFactories",
@@ -52,12 +51,6 @@ class PageFactory extends Model {
     allowNull: true,
   })
   declare factoryLocationImage: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
-  declare factoryLocationUrl: string;
 
   @Column({
     type: DataType.STRING,
