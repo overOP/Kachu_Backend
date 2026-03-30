@@ -13,7 +13,7 @@ router.post(
   auth.isAuthenticated,
   auth.restrictTo(Role.Admin, Role.Superadmin),
   upload.single("factoryImage"),
-  catchAsync(FactoryController.addFactory)
+  catchAsync(FactoryController.addFactory),
 );
 
 router.get("/", catchAsync(FactoryController.getAllFactories));
@@ -25,14 +25,14 @@ router.put(
   auth.isAuthenticated,
   auth.restrictTo(Role.Admin, Role.Superadmin),
   upload.single("factoryImage"),
-  catchAsync(FactoryController.updateFactory)
+  catchAsync(FactoryController.updateFactory),
 );
 
 router.delete(
   "/:id",
   auth.isAuthenticated,
   auth.restrictTo(Role.Admin, Role.Superadmin),
-  catchAsync(FactoryController.deleteFactory)
+  catchAsync(FactoryController.deleteFactory),
 );
 
 export default router;

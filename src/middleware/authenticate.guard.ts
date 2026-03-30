@@ -29,8 +29,6 @@ class Auth {
           res.status(403).json({
             message: "token not valid",
           });
-          console.log("JWT_SECRET:", process.env.JWT_SECRET);
-          console.log("Token:", token);
           return;
         } else {
           try {
