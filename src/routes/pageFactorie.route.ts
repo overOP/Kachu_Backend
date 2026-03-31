@@ -13,9 +13,12 @@ router.post(
   "/",
   auth.isAuthenticated,
   auth.restrictTo(Role.Admin, Role.Superadmin),
-  upload.single("factoryBannerImage"),
-  upload.single("factoryImages"),
-  upload.single("factoryLocationImage"),
+  upload.fields([
+    { name: "factoryBannerImage", maxCount: 1 },
+    { name: "factoryImages", maxCount: 5 },
+    { name: "factoryLocationImage", maxCount: 5 },
+  ]),
+
   catchAsync(pageFactoryController.addpageFactorie),
 );
 

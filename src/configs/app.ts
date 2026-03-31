@@ -4,7 +4,8 @@ import auth from "../routes/auth.route";
 import product from "../routes/product.route";
 import category from "../routes/category.route";
 import factory from "../routes/factorie.route";
-import pageFactory from "../routes/pageFactorie.route";
+import pageFactorie from "../routes/pageFactorie.route";
+import showAll from "../routes/showAll.route";
 export class App {
   public app = express();
 
@@ -28,6 +29,7 @@ export class App {
     this.app.use("/api/products", product);
     this.app.use("/api/categories", category);
     this.app.use("/api/factories", factory);
-    this.app.use("/api/pagefactorie", pageFactory);
+    this.app.use("/api/pagefactorie", pageFactorie);
+    this.app.use("/api/all-data", showAll);
   }
 }

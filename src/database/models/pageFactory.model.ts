@@ -74,6 +74,7 @@ class PageFactory extends Model {
     allowNull: false,
   })
   declare factoryId: number;
+
   @BelongsTo(() => Factory)
   declare factory: Factory;
 }
