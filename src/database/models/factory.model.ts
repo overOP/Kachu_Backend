@@ -1,4 +1,12 @@
-import { Table, Column, Model, DataType, HasMany } from "sequelize-typescript";
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  HasMany,
+  ForeignKey,
+  BelongsTo,
+} from "sequelize-typescript";
 import Product from "./products.model";
 
 @Table({
@@ -27,8 +35,18 @@ class Factory extends Model {
   })
   declare factoryImage?: string;
 
-  @HasMany(() => Product)
-  declare products: Product[];
+  @ForeignKey(() => Product)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  declare productId: number;
+
+  @BelongsTo(() => Product)
+  declare product: Product;
+
+  // @HasMany(() => Product)
+  // declare products: Product[];
 }
 
 export default Factory;

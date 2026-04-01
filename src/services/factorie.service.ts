@@ -5,6 +5,7 @@ import { Op } from "sequelize";
 
 export const createFactoryService = async (
   factoryName: string,
+  productId: number,
   file?: Express.Multer.File,
 ) => {
   const exists = await Factory.findOne({ where: { factoryName } });
@@ -13,6 +14,7 @@ export const createFactoryService = async (
   return Factory.create({
     factoryName,
     factoryImage: file ? file.filename : null,
+    productId,
   });
 };
 

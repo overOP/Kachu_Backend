@@ -11,8 +11,8 @@ export const createProductService = async (
   const category = await Category.findByPk(body.categoryId);
   if (!category) throw new Error("CATEGORY_NOT_FOUND");
 
-  const factory = await Factory.findByPk(body.factoryId);
-  if (!factory) throw new Error("FACTORY_NOT_FOUND");
+  // const factory = await Factory.findByPk(body.factoryId);
+  // if (!factory) throw new Error("FACTORY_NOT_FOUND");
 
   const productImages = files?.map((file) => file.filename) || [];
 
@@ -24,7 +24,7 @@ export const createProductService = async (
     deliveryTime: body.deliveryTime,
     productImages,
     categoryId: category.id,
-    factoryId: factory.id,
+    // factoryId: factory.id,
     createdBy: userId,
   });
 };

@@ -20,6 +20,8 @@ class pageFactoryController {
       productId,
       factoryId,
     } = req.body;
+    console.log("REQ BODY:", req.body);
+
     try {
       const result = await addpageFactorieService(
         factoryBannerImage,
@@ -31,6 +33,7 @@ class pageFactoryController {
         productId,
         factoryId,
       );
+
       return sendSuccessResponse(
         res,
         "PageFactorie added successfully",
@@ -38,6 +41,9 @@ class pageFactoryController {
         200,
       );
     } catch (err: any) {
+      console.error("REAL ERROR:", err);
+      console.error("ERROR MESSAGE:", err.message);
+      console.error("ERROR DETAILS:", err.errors);
       return sendErrorResponse(res, "Error adding pageFactorie", 400);
     }
   }

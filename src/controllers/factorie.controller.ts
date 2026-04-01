@@ -10,7 +10,7 @@ import Product from "../database/models/products.model";
 
 class FactoryController {
   async addFactory(req: Request, res: Response) {
-    const { factoryName } = req.body;
+    const { factoryName, productId } = req.body;
 
     const exists = await Factory.findOne({ where: { factoryName } });
     if (exists) {
@@ -21,6 +21,7 @@ class FactoryController {
 
     const factory = await Factory.create({
       factoryName,
+      productId,
       factoryImage: file ? file.filename : null,
     });
 
