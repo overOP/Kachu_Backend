@@ -1,12 +1,16 @@
 import { Request, Response } from "express";
 import { Op } from "sequelize";
 import Factory from "../database/models/factory.model";
-import { sendErrorResponse, sendSuccessResponse } from "../utils/responseHelper";
+import {
+  sendErrorResponse,
+  sendSuccessResponse,
+} from "../utils/responseHelper";
 import { deleteFile } from "../utils/fileHelper";
+import Product from "../database/models/products.model";
 
 class FactoryController {
   async addFactory(req: Request, res: Response) {
-    const { factoryName } = req.body;
+    const { factoryName, productId } = req.body;
 
     const exists = await Factory.findOne({ where: { factoryName } });
     if (exists) {
@@ -17,6 +21,7 @@ class FactoryController {
 
     const factory = await Factory.create({
       factoryName,
+      productId,
       factoryImage: file ? file.filename : null,
     });
 
@@ -26,6 +31,7 @@ class FactoryController {
   async getAllFactories(req: Request, res: Response) {
     const factories = await Factory.findAll({
       attributes: ["id", "factoryName", "factoryImage"],
+      include: [{ model: Product, attributes: ["id", "productName"] }],
       order: [["factoryName", "ASC"]],
     });
 

@@ -1,38 +1,44 @@
 import express, { Router } from "express";
 import catchAsync from "../utils/catchAsync";
 import auth from "../middleware/authenticate.guard";
-import { multer, storage } from "../middleware/multer";
-import FactoryController from "../controllers/factorie.controller";
+import CategoryController from "../controllers/categorie.controller";
 import { Role } from "../enum/auth.enum";
 
 const router: Router = express.Router();
-const upload = multer({ storage });
+
+router.get(
+  "/",
+  auth.isAuthenticated,
+  auth.restrictTo(Role.Admin, Role.Superadmin),
+  catchAsync(CategoryController.getAllCategories)
+);
+
+router.get(
+  "/:id",
+  auth.isAuthenticated,
+  auth.restrictTo(Role.Admin, Role.Superadmin),
+  catchAsync(CategoryController.getCategoryById)
+);
 
 router.post(
   "/",
   auth.isAuthenticated,
   auth.restrictTo(Role.Admin, Role.Superadmin),
-  upload.single("factoryImage"),
-  catchAsync(FactoryController.addFactory)
+  catchAsync(CategoryController.addCategory)
 );
-
-router.get("/", catchAsync(FactoryController.getAllFactories));
-
-router.get("/:factoryName", catchAsync(FactoryController.getFactoryByName));
 
 router.put(
   "/:id",
   auth.isAuthenticated,
   auth.restrictTo(Role.Admin, Role.Superadmin),
-  upload.single("factoryImage"),
-  catchAsync(FactoryController.updateFactory)
+  catchAsync(CategoryController.updateCategory)
 );
 
 router.delete(
   "/:id",
   auth.isAuthenticated,
   auth.restrictTo(Role.Admin, Role.Superadmin),
-  catchAsync(FactoryController.deleteFactory)
+  catchAsync(CategoryController.deleteCategory)
 );
 
 export default router;

@@ -1,11 +1,12 @@
 import {
-  Table,
+  BelongsTo,
   Column,
-  Model,
   DataType,
   ForeignKey,
-  BelongsTo,
+  Model,
+  Table,
 } from "sequelize-typescript";
+import Factory from "./factory.model";
 import Product from "./products.model";
 
 @Table({
@@ -55,12 +56,6 @@ class PageFactory extends Model {
     type: DataType.STRING,
     allowNull: true,
   })
-  declare factoryLocationUrl: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
   declare factoryLocation: string;
 
   @ForeignKey(() => Product)
@@ -72,6 +67,16 @@ class PageFactory extends Model {
 
   @BelongsTo(() => Product)
   declare product: Product;
+
+  @ForeignKey(() => Factory)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  declare factoryId: number;
+
+  @BelongsTo(() => Factory)
+  declare factory: Factory;
 }
 
 export default PageFactory;

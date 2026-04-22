@@ -257,5 +257,3 @@ export const deleteUserByIdService = async (id: string) => {
 
   return user;
 };
-
-

@@ -1,10 +1,12 @@
 import Factory from "../database/models/factory.model";
+import Product from "../database/models/products.model";
 import { deleteFile } from "../utils/fileHelper";
 import { Op } from "sequelize";
 
 export const createFactoryService = async (
   factoryName: string,
-  file?: Express.Multer.File
+  productId: number,
+  file?: Express.Multer.File,
 ) => {
   const exists = await Factory.findOne({ where: { factoryName } });
   if (exists) throw new Error("FACTORY_ALREADY_EXISTS");
@@ -12,11 +14,15 @@ export const createFactoryService = async (
   return Factory.create({
     factoryName,
     factoryImage: file ? file.filename : null,
+    productId,
   });
 };
 
 export const getAllFactoriesService = async () => {
-  return Factory.findAll({ order: [["factoryName", "ASC"]] });
+  return Factory.findAll({
+    include: [{ model: Product, attributes: ["id", "productName"] }],
+    order: [["factoryName", "ASC"]],
+  });
 };
 
 export const getFactoryByNameService = async (factoryName: string) => {
@@ -26,7 +32,7 @@ export const getFactoryByNameService = async (factoryName: string) => {
 export const updateFactoryService = async (
   id: number,
   factoryName?: string,
-  file?: Express.Multer.File
+  file?: Express.Multer.File,
 ) => {
   const factory = await Factory.findByPk(id);
   if (!factory) throw new Error("FACTORY_NOT_FOUND");

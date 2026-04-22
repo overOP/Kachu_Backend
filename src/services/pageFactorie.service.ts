@@ -1,59 +1,37 @@
 import Factory from "../database/models/factory.model";
-import { deleteFile } from "../utils/fileHelper";
-import { Op } from "sequelize";
+import PageFactory from "../database/models/pageFactory.model";
+import Product from "../database/models/products.model";
 
-export const createPageFactoryService = async (
+export const addpageFactorieService = async (
+  factoryBannerImage: string,
   factoryName: string,
-  file?: Express.Multer.File
+  factoryDescription: string,
+  factoryImages: string,
+  factoryLocationImage: string,
+  factoryLocation: string,
+  productId: Number,
+  factoryId: Number,
 ) => {
-  const exists = await Factory.findOne({ where: { factoryName } });
-  if (exists) throw new Error("FACTORY_ALREADY_EXISTS");
-
-  return Factory.create({
+  const addProducts = await PageFactory.create({
+    factoryBannerImage,
     factoryName,
-    factoryImage: file ? file.filename : null,
+    factoryDescription,
+    factoryImages,
+    factoryLocationImage,
+    factoryLocation,
+    productId,
+    factoryId,
   });
+  console.log(addProducts);
+  return addProducts;
 };
 
-export const getAllFactoriesService = async () => {
-  return Factory.findAll({ order: [["factoryName", "ASC"]] });
-};
-
-export const getFactoryByNameService = async (factoryName: string) => {
-  return Factory.findOne({ where: { factoryName } });
-};
-
-export const updateFactoryService = async (
-  id: number,
-  factoryName?: string,
-  file?: Express.Multer.File
-) => {
-  const factory = await Factory.findByPk(id);
-  if (!factory) throw new Error("FACTORY_NOT_FOUND");
-
-  if (factoryName) {
-    const exists = await Factory.findOne({
-      where: { factoryName, id: { [Op.ne]: id } },
-    });
-    if (exists) throw new Error("FACTORY_ALREADY_EXISTS");
-
-    factory.factoryName = factoryName;
-  }
-
-  if (file) {
-    if (factory.factoryImage) await deleteFile(factory.factoryImage);
-    factory.factoryImage = file.filename;
-  }
-
-  await factory.save();
-  return factory;
-};
-
-export const deleteFactoryService = async (id: number) => {
-  const factory = await Factory.findByPk(id);
-  if (!factory) throw new Error("FACTORY_NOT_FOUND");
-
-  if (factory.factoryImage) await deleteFile(factory.factoryImage);
-
-  await factory.destroy();
+export const getAllPageFctoriesService = async () => {
+  return await PageFactory.findAll({
+    include: [
+      { model: Product, attributes: ["id", "productName"] },
+      { model: Factory, attributes: ["id", "factoryName"] },
+    ],
+    order: [["createdAt", "DESC"]],
+  });
 };

@@ -6,13 +6,13 @@ import { Op } from "sequelize";
 export const createProductService = async (
   body: any,
   files: Express.Multer.File[],
-  userId: string
+  userId: string,
 ) => {
   const category = await Category.findByPk(body.categoryId);
   if (!category) throw new Error("CATEGORY_NOT_FOUND");
 
-  const factory = await Factory.findByPk(body.factoryId);
-  if (!factory) throw new Error("FACTORY_NOT_FOUND");
+  // const factory = await Factory.findByPk(body.factoryId);
+  // if (!factory) throw new Error("FACTORY_NOT_FOUND");
 
   const productImages = files?.map((file) => file.filename) || [];
 
@@ -24,37 +24,28 @@ export const createProductService = async (
     deliveryTime: body.deliveryTime,
     productImages,
     categoryId: category.id,
-    factoryId: factory.id,
+    // factoryId: factory.id,
     createdBy: userId,
   });
 };
 
 export const getAllProductsService = async () => {
   return Product.findAll({
-    include: [
-      { model: Category, attributes: ["categoryName"] },
-      { model: Factory, attributes: ["factoryName"] },
-    ],
+    include: [{ model: Category, attributes: ["categoryName"] }],
     order: [["createdAt", "DESC"]],
   });
 };
 
 export const getProductByIdService = async (id: number) => {
   return Product.findByPk(id, {
-    include: [
-      { model: Category, attributes: ["categoryName"] },
-      { model: Factory, attributes: ["factoryName"] },
-    ],
+    include: [{ model: Category, attributes: ["categoryName"] }],
   });
 };
 
 export const getProductsByCategoryService = async (categoryId: number) => {
   return Product.findAll({
     where: { categoryId },
-    include: [
-      { model: Category, attributes: ["categoryName"] },
-      { model: Factory, attributes: ["factoryName"] },
-    ],
+    include: [{ model: Category, attributes: ["categoryName"] }],
   });
 };
 
@@ -65,17 +56,14 @@ export const searchProductsService = async (query: string) => {
         [Op.like]: `%${query}%`,
       },
     },
-    include: [
-      { model: Category, attributes: ["categoryName"] },
-      { model: Factory, attributes: ["factoryName"] },
-    ],
+    include: [{ model: Category, attributes: ["categoryName"] }],
   });
 };
 
 export const updateProductService = async (
   id: number,
   body: any,
-  files?: Express.Multer.File[]
+  files?: Express.Multer.File[],
 ) => {
   const product = await Product.findByPk(id);
   if (!product) throw new Error("PRODUCT_NOT_FOUND");

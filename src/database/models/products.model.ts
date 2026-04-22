@@ -61,16 +61,6 @@ class Product extends Model {
   })
   declare deliveryTime?: string | null;
 
-  @ForeignKey(() => Factory)
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
-  })
-  declare factoryId: number;
-
-  @BelongsTo(() => Factory)
-  declare factory: Factory;
-
   @ForeignKey(() => Category)
   @Column({
     type: DataType.INTEGER,
@@ -93,6 +83,9 @@ class Product extends Model {
 
   @HasMany(() => PageFactory)
   declare pageFactories: PageFactory[];
+
+  @HasMany(() => Factory)
+  declare products: Factory[];
 }
 
 export default Product;
